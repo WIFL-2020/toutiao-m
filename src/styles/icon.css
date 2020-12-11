@@ -1,6 +1,3 @@
-body {
-  background-color: #f5f7f9;
-}
 @font-face {
   font-family: "toutiao";
   src: url('//at.alicdn.com/t/font_2260168_601uy18abh8.eot?t=1607513859020');
@@ -77,10 +74,4 @@ body {
 }
 .toutiao-shanchu:before {
   content: "\e615";
-}
-.page-nav-bar {
-  background-color: #3296fa;
-}
-.page-nav-bar .van-nav-bar__title {
-  color: #fff;
 }

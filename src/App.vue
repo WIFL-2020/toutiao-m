@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>text</h1>
+    <!-- 路由的出口 -->
     <router-view/>
   </div>
 </template>
