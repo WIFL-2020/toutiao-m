@@ -13,25 +13,26 @@ const routes = [
     component: () => import('@/views/login')
   }, {
     path: '/',
-    name: 'layout',
+    // name: 'layout',
     component: () => import('@/views/layout'),
     children: [
       {
-        path: '/',
-        name: 'layout',
-        component: () => import('@/views/layout')
+        // 默认子路由
+        path: '',
+        name: 'home',
+        component: () => import('@/views/home')
       }, {
-        path: '/',
-        name: 'layout',
-        component: () => import('@/views/layout')
+        path: '/qa',
+        name: 'qa',
+        component: () => import('@/views/qa')
       }, {
-        path: '/',
-        name: 'layout',
-        component: () => import('@/views/layout')
+        path: '/video',
+        name: 'video',
+        component: () => import('@/views/video')
       }, {
-        path: '/',
-        name: 'layout',
-        component: () => import('@/views/layout')
+        path: '/my',
+        name: 'my',
+        component: () => import('@/views/my')
       }
     ]
   }
