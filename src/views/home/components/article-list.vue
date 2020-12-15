@@ -31,6 +31,7 @@
         />
       </van-list>
     </van-pull-refresh>
+
   </div>
 </template>
 
@@ -57,6 +58,7 @@ export default {
       timestamp: null, // 请求下一页数据的时间戳
       isRefreshLoading: false,
       refreshSuccessText: ''
+
     }
   },
   computed: {},

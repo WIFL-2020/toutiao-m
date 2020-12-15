@@ -25,29 +25,49 @@
       </van-tab>
       <div slot="nav-right" class="placeholder">
       </div>
-      <div slot="nav-right" class="hamburger-btn">
+      <div @click="isChannelShow = true" slot="nav-right" class="hamburger-btn">
         <i class="toutiao toutiao-gengduo"></i>
       </div>
     </van-tabs>
     <!-- 频道列表 -->
 
+    <!-- 弹出层  频道编辑-->
+    <van-popup
+      class="edit-channel-popup"
+      v-model="isChannelShow"
+      position="bottom"
+      :style="{ height: '100%' }"
+      closeable
+      close-icon-position="top-left"
+    >
+    <channel-edit
+    :myChannels="channels"
+    :active="active"
+    @update-active="onUpdateActive"
+    />
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { getUserChannels } from '@/api/user'
 import ArticleList from './components/article-list'
+import ChannelEdit from './components/channel.edit'
 export default {
   name: 'HomeIndex',
   components: {
-    ArticleList
+    ArticleList,
+    ChannelEdit
   },
-  props: {},
+  props: {
+  },
   data () {
     return {
       active: 0,
       // 列表数据
-      channels: []
+      channels: [],
+
+      isChannelShow: true // 这里我们先设置为 true 就能看到弹窗的页面了
     }
   },
   computed: {},
@@ -64,6 +84,10 @@ export default {
       } catch (err) {
         this.$tasat('获取数据失败')
       }
+    },
+    onUpdateActive (index) {
+      this.active = index
+      this.isChannelShow = false
     }
   }
 }
@@ -145,6 +169,10 @@ export default {
         background-size: contain;
       }
     }
+  }
+  .edit-channel-popup {
+    // padding-top: 100px;
+    box-sizing: border-box;
   }
 }
 </style>
