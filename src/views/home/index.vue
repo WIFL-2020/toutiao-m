@@ -10,6 +10,7 @@
         size="small"
         round
         icon="search"
+        to="/search"
       >搜索</van-button>
     </van-nav-bar>
     <!-- /导航栏 -->
@@ -53,24 +54,27 @@
 import { getUserChannels } from '@/api/user'
 import ArticleList from './components/article-list'
 import ChannelEdit from './components/channel.edit'
+import { mapState } from 'vuex'
+import { getItem } from '@/utils/storage.js'
 export default {
   name: 'HomeIndex',
   components: {
     ArticleList,
     ChannelEdit
   },
-  props: {
-  },
+  props: {},
   data () {
     return {
       active: 0,
       // 列表数据
       channels: [],
 
-      isChannelShow: true // 这里我们先设置为 true 就能看到弹窗的页面了
+      isChannelShow: false // 这里我们先设置为 true 就能看到弹窗的页面了
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(['user'])
+  },
   watch: {},
   created () {
     this.loadChannels()
@@ -79,15 +83,31 @@ export default {
   methods: {
     async loadChannels () {
       try {
-        const { data } = await getUserChannels()
-        this.channels = data.data.channels
+        let channels = []
+        // const { data } = await getUserChannels()
+        // this.channels = data.data.channels
+        if (this.user) {
+          const { data } = await getUserChannels()
+          channels = data.data.channels
+        } else {
+          const localChannels = getItem('TOUTIAO_CHANNELS')
+          if (localChannels) {
+            this.channels = localChannels
+          } else {
+            const { data } = await getUserChannels()
+            channels = data.data.channels
+          }
+        }
+        this.channels = channels
       } catch (err) {
-        this.$tasat('获取数据失败')
+        this.$toast('获取数据失败')
       }
     },
-    onUpdateActive (index) {
+    onUpdateActive (index, isChannelShow = true) {
+      // 更新激活项
       this.active = index
-      this.isChannelShow = false
+      // 关闭弹层
+      this.isChannelShow = isChannelShow
     }
   }
 }

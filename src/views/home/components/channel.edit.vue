@@ -17,6 +17,7 @@
       v-for="(channelItem, index) in myChannels"
       :key="index"
       @click="onMyChannelClick(channelItem, index)"
+      swipe-threshold
     >
     <van-icon v-show="isEdit && !fiexChannels.includes(channelItem.id)" slot="icon" name="clear"></van-icon>
     <!-- <van-icon v-show="isEdit && !isguding.includes(channelItem.id)" slot="icon" name="clear"></van-icon> -->
@@ -41,7 +42,9 @@
 </template>
 
 <script>
-import { getAllChannel } from '@/api/channel.js'
+import { getAllChannel, addUserChannel, deleteUserChannel } from '@/api/channel.js'
+import { setItem } from '@/utils/storage.js'
+import { mapState } from 'vuex'
 export default {
   name: 'ChannelEdit',
   components: {},
@@ -74,7 +77,8 @@ export default {
           return channel.id === myChannel.id
         })
       })
-    }
+    },
+    ...mapState(['user'])
   },
   watch: {},
   created () {
@@ -91,14 +95,52 @@ export default {
         this.$toast('获取频幕数据失败')
       }
     },
-    onAddChannel (channel) {
+    async onAddChannel (channel) {
       this.myChannels.push(channel)
+      if (this.user) {
+        try {
+          await addUserChannel({
+            id: channel.id,
+            seq: this.myChannels.length
+          })
+          this.$toast('添加成功')
+        } catch (err) {
+          this.$toast('保存失败')
+        }
+      } else {
+        setItem('TOUTIAO_CHANNELS', this.myChannels)
+      }
     },
     onMyChannelClick (channelItem, index) {
       if (this.isEdit) {
-
+        // 如果是固定则不删除
+        if (this.fiexChannels.includes(channelItem.id)) {
+          return
+        }
+        // 删除频道管道
+        this.myChannels.splice(index, 1)
+        if (index <= this.active) {
+          this.$emit('update-active', this.active - 1, true)
+        }
+        // 处理持续化
+        this.deleteChannel(channelItem)
       } else {
-        this.$emit('update-active', index)
+        this.$emit('update-active', index, false)
+      }
+    },
+    // 删除频道
+    async deleteChannel (channelItem) {
+      try {
+        if (this.user) {
+          // 已登录，将数据存储到线上
+          await deleteUserChannel(channelItem.id)
+        } else {
+          // 未登录，将数据存储到本地
+          setItem('channles', this.userChannels)
+        }
+      } catch (err) {
+        console.log(err)
+        this.$toast('删除频道失败，请稍后重试')
       }
     }
   }
