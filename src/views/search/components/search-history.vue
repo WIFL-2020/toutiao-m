@@ -16,7 +16,10 @@
 
 <script>
 export default {
-  name: 'SearchHistory'
+  name: 'SearchHistory',
+  data () {
+    return {}
+  }
 }
 </script>
 

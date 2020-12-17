@@ -9,15 +9,15 @@
         background="#3296fa"
         @search="onSearch"
         @cancel="onCancel"
-        @focus="isResult = false"
+        @focus="isResultShow = false"
       />
     </form>
-     <!-- 搜索历史 -->
-    <search-history v-if="isResult"/>
+    <!-- 搜索结果 -->
+    <search-result v-if="isResultShow"/>
     <!-- 联想建议 -->
     <search-suggestion v-else-if="searchText" :search-text="searchText"/>
-    <!-- 搜索结果 -->
-    <search-result v-else/>
+     <!-- 搜索历史记录 -->
+    <search-history v-else/>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
     return {
       searchText: '',
       // 控制页面显示状态
-      isResult: false
+      isResultShow: false
     }
   },
   components: {
@@ -54,9 +54,10 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
 .search-container {
   .van-search__action {
     color: #fff;
   }
 }
-<style scoped></style>
+</style>
