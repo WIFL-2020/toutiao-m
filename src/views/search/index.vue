@@ -17,7 +17,11 @@
     <!-- 联想建议 -->
     <search-suggestion v-else-if="searchText" :search-text="searchText" @search="onSearch"/>
      <!-- 搜索历史记录 -->
-    <search-history v-else :search-histories="searchHistories"/>
+    <search-history
+    v-else
+    :search-histories="searchHistories"
+    @clear-search-histories="searchHistories = []"
+    @search="onSearch" />
   </div>
 </template>
 
@@ -25,6 +29,7 @@
 import SearchHistory from './components/search-history'
 import SearchSuggestion from './components/search-suggestion'
 import SearchResult from './components/search-result'
+import { setItem, getItem } from '@/utils/storage'
 export default {
   name: 'SearchIndex',
   data () {
@@ -32,7 +37,8 @@ export default {
       searchText: '',
       // 控制页面显示状态
       isResultShow: false,
-      searchHistories: []
+      // searchHistories: []
+      searchHistories: getItem('TOUTIAO_SEARCH_HISTORIES') || []
     }
   },
   components: {
@@ -42,7 +48,14 @@ export default {
   },
   props: {},
   computed: {},
-  watch: {},
+  watch: {
+    searchHistories (value) {
+      setItem('TOUTIAO_SEARCH_HISTORIES', value)
+    }
+    /* searchHistories: {
+      handler () {}
+    } */
+  },
   created () {},
   methods: {
     onSearch (val) {
@@ -51,6 +64,7 @@ export default {
       this.searchText = val
 
       const index = this.searchHistories.indexOf(val)
+      // 判断存不存在
       if (index !== -1) {
         this.searchHistories.splice(index, 1)
       }

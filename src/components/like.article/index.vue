@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  name: 'ArticleItem',
+  name: 'LikeIndex',
   components: {},
   props: {
     article: {
