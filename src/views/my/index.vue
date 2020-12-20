@@ -36,7 +36,7 @@
       <div class="login-btn" @click="$router.push({
         name: 'login',
         query: {
-          redirect: '/my'
+          redirect: '/'
         }
       })">
         <img class="mobile-img" src="~@/assets/mobile.png" alt="">
@@ -105,7 +105,6 @@ export default {
       try {
         const { data } = await getUserInfo()
         this.userInfo = data.data
-        console.log(data)
       } catch (err) {
         console.log(err)
         this.$toast('获取数据失败')

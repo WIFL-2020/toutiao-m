@@ -102,6 +102,7 @@ export default {
         this.$toast.success('登录成功')
         // 登录成功跳转回原来页面
         // this.$router.back()
+        console.log(this.$route)
         this.$router.push(this.$route.query.redirect || '/')
       } catch (err) {
         if (err.response.status === 400) {

@@ -3,7 +3,7 @@
       :name="value ? 'star' : 'star-o'"
       :class="{
         collected: value
-        }"
+      }"
       :loading="loading"
       @click="onCollect"
     />
@@ -32,7 +32,6 @@ export default {
   computed: {},
   watch: {},
   created () {
-    this.onCollect()
   },
   mounted () {},
   methods: {
@@ -40,8 +39,12 @@ export default {
       this.loading = true
       try {
         if (this.value) {
+          console.log(1)
+          console.log(this.value)
+          // 已收藏
           await deleteCollect(this.articleId)
         } else {
+          // 没有收藏
           await addCollect(this.articleId)
         }
         // 更新视图
@@ -49,7 +52,7 @@ export default {
         //  用于判断是收藏成功与取消收藏
         this.$toast.success(!this.value ? '收藏成功' : '取消收藏')
       } catch (err) {
-        console.log(err)
+        // console.log(err)
         this.$toast.fail('获取数据失败,请重试')
       }
       this.loading = false
@@ -59,7 +62,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
- .van-icon {
+  .collected.van-icon {
     color: #ffa500;
   }
 </style>

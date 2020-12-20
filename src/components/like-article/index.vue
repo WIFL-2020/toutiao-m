@@ -2,7 +2,7 @@
   <van-icon
       :name="value ===1 ? 'good-job' : 'good-job-o'"
       :class="{
-        like: value ===1
+        liked: value ===1
         }"
       :loading="loading"
       @click="onCollect"
@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.van-icon {
+.van-icon.liked {
     color: #e5645f;
 }
 </style>

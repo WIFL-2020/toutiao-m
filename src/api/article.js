@@ -17,7 +17,7 @@ export const getArticleById = articleId => {
   })
 }
 
-// 收藏接口
+// 收藏文章接口
 export const addCollect = target => {
   return request({
     method: 'POST',
@@ -28,7 +28,7 @@ export const addCollect = target => {
   })
 }
 
-// 取消收藏接口
+// 取消收藏文章接口
 export const deleteCollect = target => {
   return request({
     method: 'DELETE',

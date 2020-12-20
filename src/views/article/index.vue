@@ -76,6 +76,7 @@
         <!-- 评论 -->
         <comment-list
           :source="article.art_id"
+          @onload-success="totalCommentCount=$event.total_count"
         />
          <!-- 底部区域 -->
         <div class="article-bottom">
@@ -87,7 +88,7 @@
           >写评论</van-button>
           <van-icon
             name="comment-o"
-            badge="123"
+            :badge="totalCommentCount"
             color="#777"
           />
           <!-- 收藏组件 -->
@@ -162,7 +163,8 @@ export default {
       // 控制显示或隐藏
       isDate: false,
       // 控制页面安妮的状态
-      followLoading: false
+      followLoading: false,
+      totalCommentCount: 12
     }
   },
   computed: {},
@@ -186,7 +188,7 @@ export default {
         if (this.response && err.response.status === 404) {
           this.errState = 404
         }
-        console.log('获取数据失败', err)
+        this.$toast('获取数据失败', err)
       }
       this.loading = false
     },

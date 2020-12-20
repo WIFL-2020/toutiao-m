@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 <template>
   <van-list
   v-model="loading"
@@ -7,15 +8,22 @@
   :error.sync="error"
   error-text="请求失败，点击重新加载"
 >
-  <van-cell v-for="(item, index) in list" :key="index" :title="item.content" />
+  <comment-item
+    v-for="(item, index) in list"
+    :key="index"
+    :comment="item"
+  />
 </van-list>
 </template>
 
 <script>
 import { getComments } from '@/api/comment'
+import CommentItem from './comment-item'
 export default {
   name: 'Comment-List',
-  components: {},
+  components: {
+    CommentItem
+  },
   props: {
     source: {
       type: [Number, String, Object],
@@ -28,13 +36,15 @@ export default {
       loading: false,
       finished: false,
       offset: null,
-      limit: 10,
+      limit: 20,
       error: false
     }
   },
   computed: {},
   watch: {},
-  created () {},
+  created () {
+    this.onLoad()
+  },
   mounted () {},
   methods: {
     async onLoad () {
@@ -49,6 +59,8 @@ export default {
         // 将数据添加到列表中
         const { results } = data.data
         this.list.push(...results)
+
+        this.$emit('onload-success', data.data)
 
         this.loading = false
         // 将loading 设置为 false
