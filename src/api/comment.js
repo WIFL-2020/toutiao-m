@@ -1,0 +1,12 @@
+// 获取评论模块
+import request from '@/utils/request'
+
+// 获取评论方法
+
+export const getComments = params => {
+  return request({
+    method: 'GET',
+    url: '/v1_0/comments',
+    params
+  })
+}
