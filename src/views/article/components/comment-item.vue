@@ -49,7 +49,7 @@ export default {
   data () {
     return {
       // 定义点赞亮与不亮
-      comentLike: false
+      commentLike: false
     }
   },
   computed: {},

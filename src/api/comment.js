@@ -31,3 +31,13 @@ export const deleteCommentLike = target => {
     url: `/v1_0/comment/likings/${target}`
   })
 }
+
+// 添加评论或评论回复
+
+export const addComment = data => {
+  return request({
+    method: 'POST',
+    url: '/v1_0/comments',
+    data
+  })
+}

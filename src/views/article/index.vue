@@ -77,6 +77,7 @@
         <comment-list
           :source="article.art_id"
           @onload-success="totalCommentCount=$event.total_count"
+          :list="commentList"
         />
          <!-- 底部区域 -->
         <div class="article-bottom">
@@ -85,6 +86,7 @@
             type="default"
             round
             size="small"
+            @click="isPostShow=true"
           >写评论</van-button>
           <van-icon
             name="comment-o"
@@ -110,6 +112,16 @@
           <van-icon name="share" color="#777777"></van-icon>
         </div>
         <!-- /底部区域 -->
+        <!-- 弹出框 -->
+        <van-popup
+          v-model="isPostShow"
+          position="bottom"
+        >
+        <comment-post
+        :target="article.art_id"
+        @post-success="onPostSuccess"
+        />
+        </van-popup>
       </div>
       <!-- /加载完成-文章详情 -->
       <!-- 加载失败：404 -->
@@ -139,6 +151,7 @@ import FollowUser from '@/components/follow-user'
 import CollectArticle from '@/components/collect-article'
 import LikeArticle from '@/components/like-article'
 import CommentList from './components/comment-list'
+import CommentPost from './components/comment-post'
 
 export default {
   name: 'ArticleIndex',
@@ -146,7 +159,8 @@ export default {
     FollowUser,
     CollectArticle,
     LikeArticle,
-    CommentList
+    CommentList,
+    CommentPost
   },
   props: {
     articleId: {
@@ -164,7 +178,11 @@ export default {
       isDate: false,
       // 控制页面安妮的状态
       followLoading: false,
-      totalCommentCount: 12
+      totalCommentCount: 0,
+      // 控制显示或隐藏
+      isPostShow: false,
+      // 评论列表
+      commentList: []
     }
   },
   computed: {},
@@ -209,6 +227,12 @@ export default {
           })
         }
       })
+    },
+    onPostSuccess (data) {
+      // 关闭弹出框
+      this.isPostShow = false
+      // 将发布内容显示到列表顶部
+      this.commentList.unshift(data.new_obj)
     }
     // async onFollow () {
     //   this.followLoading = true
