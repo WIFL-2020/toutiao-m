@@ -29,6 +29,12 @@ export default {
       required: true
     }
   },
+  inject: {
+    articleId: {
+      type: [Array, String, Object],
+      default: null
+    }
+  },
   data () {
     return {
       message: ''
@@ -48,11 +54,11 @@ export default {
       try {
         const { data } = await addComment({
           // 评论的目标id（评论文章即为文章id，对评论进行回复则为评论id）
-          target: this.target,
+          target: this.target.toString(),
           // 评论内容
           content: this.message,
           // 文章id，对评论内容发表回复时，需要传递此参数，表明所属文章id。对文章进行评论，不要传此参数。
-          art_id: null
+          art_id: this.articleId ? this.articleId.toString() : null
         })
 
         console.log(data)

@@ -12,6 +12,7 @@
     v-for="(item, index) in list"
     :key="index"
     :comment="item"
+    @click-reply="$emit('click-reply', $event)"
   />
 </van-list>
 </template>
@@ -32,6 +33,13 @@ export default {
     list: {
       type: Array,
       default: () => []
+    },
+    type: {
+      type: String,
+      validator (value) {
+        return ['a', 'c'].includes(value)
+      },
+      default: 'a'
     }
   },
   data () {
@@ -40,13 +48,14 @@ export default {
       loading: false,
       finished: false,
       offset: null,
-      limit: 20,
+      limit: 10,
       error: false
     }
   },
   computed: {},
   watch: {},
   created () {
+    this.loading = true
     this.onLoad()
   },
   mounted () {},
@@ -55,10 +64,10 @@ export default {
       try {
         // 请求获取数据
         const { data } = await getComments({
-          type: 'a',
-          source: this.source,
+          type: this.type,
+          source: this.source.toString(),
           offset: this.offset,
-          limit: 10
+          limit: this.limit
         })
         // 将数据添加到列表中
         const { results } = data.data
@@ -76,6 +85,7 @@ export default {
         this.finished = true
         console.log(data)
       } catch (err) {
+        // this.$toast.fail('加载失败，点击重试')
         this.error = true
         this.loading = false
       }

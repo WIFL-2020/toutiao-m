@@ -78,6 +78,7 @@
           :source="article.art_id"
           @onload-success="totalCommentCount=$event.total_count"
           :list="commentList"
+          @click-reply="onReplyClick"
         />
          <!-- 底部区域 -->
         <div class="article-bottom">
@@ -139,7 +140,18 @@
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
     </div>
-
+    <van-popup
+        v-model="isReplyShow"
+        position="bottom"
+        style="height: 100%"
+      >
+      <comment-reply
+        v-if="isReplyShow"
+        :comment="currentComment"
+        @close="isReplyShow=false"
+      />
+      </van-popup>
+    <!-- /评论回复 -->
   </div>
 </template>
 
@@ -152,6 +164,7 @@ import CollectArticle from '@/components/collect-article'
 import LikeArticle from '@/components/like-article'
 import CommentList from './components/comment-list'
 import CommentPost from './components/comment-post'
+import CommentReply from './components/comment-reply'
 
 export default {
   name: 'ArticleIndex',
@@ -160,7 +173,8 @@ export default {
     CollectArticle,
     LikeArticle,
     CommentList,
-    CommentPost
+    CommentPost,
+    CommentReply
   },
   props: {
     articleId: {
@@ -168,11 +182,17 @@ export default {
       required: true
     }
   },
+  provide: function () {
+    return {
+      articleId: this.articleId
+    }
+  },
   data () {
     return {
       // 文章详情
       article: {},
       loading: true,
+      // 失败的状态码
       errState: 0,
       // 控制显示或隐藏
       isDate: false,
@@ -182,7 +202,11 @@ export default {
       // 控制显示或隐藏
       isPostShow: false,
       // 评论列表
-      commentList: []
+      commentList: [],
+      // 控制显示与隐藏
+      isReplyShow: false,
+      // 存储子孙数据的容器
+      currentComment: []
     }
   },
   computed: {},
@@ -233,6 +257,13 @@ export default {
       this.isPostShow = false
       // 将发布内容显示到列表顶部
       this.commentList.unshift(data.new_obj)
+    },
+    onReplyClick (comment) {
+      // console.log(comment)
+      // 将拿到的数据储存起来
+      this.currentComment = comment
+      // 弹出层显示
+      this.isReplyShow = true
     }
     // async onFollow () {
     //   this.followLoading = true

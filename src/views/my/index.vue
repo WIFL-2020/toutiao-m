@@ -9,7 +9,7 @@
           <span class="name">{{userInfo.name}}</span>
         </div>
         <div class="right">
-          <van-button size="mini" round>编辑资料</van-button>
+          <van-button size="mini" round to="/user/profile" type="default">编辑资料</van-button>
         </div>
       </div>
       <div class="data-stats">
@@ -36,7 +36,7 @@
       <div class="login-btn" @click="$router.push({
         name: 'login',
         query: {
-          redirect: '/'
+          redirect: '/my'
         }
       })">
         <img class="mobile-img" src="~@/assets/mobile.png" alt="">
