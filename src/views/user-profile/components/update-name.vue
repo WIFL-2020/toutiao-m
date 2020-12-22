@@ -72,6 +72,7 @@ export default {
       } catch (err) {
         this.$toast.fail('获取信息失败')
       }
+      console.log(1111111)
     }
   }
 }

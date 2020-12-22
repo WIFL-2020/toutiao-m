@@ -4,7 +4,7 @@
     <router-view/>
 
     <!-- 标签导航栏   router 开启路由模式 -->
-    <van-tabbar class="layout-tabbar" v-model="active" router>
+    <van-tabbar class="layout-tabbar" route>
       <van-tabbar-item to="/">
         <i slot="icon" class="toutiao toutiao-shouye"></i>
         <span class="text">首页</span>
@@ -32,7 +32,6 @@ export default {
   props: {},
   data () {
     return {
-      active: 0
     }
   },
   computed: {},

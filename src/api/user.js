@@ -74,10 +74,20 @@ export const getUserProfile = target => {
 }
 
 // 获取用户的个人资料
-export const updateUserProfile = date => {
+export const updateUserProfile = data => {
   return request({
     method: 'PATCH',
     url: '/v1_0/user/profile',
-    date
+    data
+  })
+}
+
+/**
+ * 更新用户照片资料
+ */
+export const updateUserPhoto = data => {
+  return request({
+    method: 'PATCH',
+    url: '/v1_0/user/photo'
   })
 }
