@@ -1,28 +1,106 @@
 <template>
   <div class="user-profile">
-    用户资料
+    <van-nav-bar
+      class="page-nav-bar"
+      title="个人信息"
+      left-arrow
+      @click-left="$router.back()"
+    />
+    <van-cell title="头像" is-link >
+      <van-image
+        class="avatar"
+        round
+        fit="cover"
+        :src="user.photo"
+      />
+    </van-cell>
+    <van-cell title="昵称" :value="user.name" is-link @click="isUpdateNameShow=true"></van-cell>
+    <van-cell title="性别" :value="user.gender === 0 ? '男' : '女'" is-link  @click="isUpdateGenderShow = true"></van-cell>
+    <van-cell title="生日" :value="user.birthday" is-link @click="isUpdateBirthdayShow = true"></van-cell>
+
+    <!-- 编辑弹出层 -->
+    <van-popup
+      v-model="isUpdateNameShow"
+      style="height:100%"
+      position="bottom"
+    >
+    <updata-name
+      v-if="isUpdateNameShow"
+      v-model="user.name"
+      @close="isUpdateNameShow=false"
+    />
+    </van-popup>
+    <!-- 编辑性别 -->
+     <van-popup v-model="isUpdateGenderShow" position="bottom">
+      <update-gender
+        v-if="isUpdateGenderShow"
+        v-model="user.gender"
+        @close="isUpdateGenderShow = false"
+      />
+    </van-popup>
+
+    <!-- 编辑生日 -->
+    <van-popup v-model="isUpdateBirthdayShow" position="bottom">
+      <update-birthday
+        v-if="isUpdateBirthdayShow"
+        v-model="user.birthday"
+        @close="isUpdateBirthdayShow = false"
+      />
+
+    </van-popup>
+    <!-- /编辑生日 -->
   </div>
 </template>
 
 <script>
+import { getUserProfile } from '@/api/user'
+import UpdataName from './components/update-name'
+import UpdateGender from './components/update-gender'
+import UpdateBirthday from './components/update-birthday'
 export default {
   name: 'UserProfile',
+  components: {
+    UpdataName,
+    UpdateGender,
+    UpdateBirthday
+  },
   data () {
     return {
-
+      // 存放个人信息
+      user: {},
+      // 控制显示或隐藏
+      isUpdateNameShow: false,
+      isUpdateGenderShow: false,
+      isUpdateBirthdayShow: false
     }
   },
 
   created () {
-
+    this.loadUserProfile()
   },
 
   methods: {
-
+    async loadUserProfile () {
+      try {
+        const { data } = await getUserProfile()
+        console.log(data)
+        this.user = data.data
+      } catch (err) {
+        this.$toast('获取个人信息失败失败')
+      }
+    }
   }
 }
 </script>
 
 <style scoped lang='less'>
-
+.user-profile {
+  .avatar {
+    height: 60px;
+    width: 60px;
+  }
+  .van-popup {
+    background-color: #f5f7f9;
+  }
+}
 </style>
