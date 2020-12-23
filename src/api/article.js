@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export const getArticles = params => {
   return request({
     method: 'GET',
-    url: '/v1_1/articles',
+    url: '/app/v1_1/articles',
     params
   })
 }
@@ -13,7 +13,7 @@ export const getArticles = params => {
 export const getArticleById = articleId => {
   return request({
     method: 'GET',
-    url: `/v1_0/articles/${articleId}`
+    url: `/app/v1_0/articles/${articleId}`
   })
 }
 
@@ -21,7 +21,7 @@ export const getArticleById = articleId => {
 export const addCollect = target => {
   return request({
     method: 'POST',
-    url: '/v1_0/article/collections',
+    url: '/app/v1_0/article/collections',
     data: {
       target
     }
@@ -32,7 +32,7 @@ export const addCollect = target => {
 export const deleteCollect = target => {
   return request({
     method: 'DELETE',
-    url: `/v1_0/article/collections/${target}`
+    url: `/app/v1_0/article/collections/${target}`
   })
 }
 
@@ -40,7 +40,7 @@ export const deleteCollect = target => {
 export const addLike = target => {
   return request({
     method: 'POST',
-    url: '/v1_0/article/likings',
+    url: '/app/v1_0/article/likings',
     data: {
       target
     }
@@ -51,6 +51,6 @@ export const addLike = target => {
 export const deleteLike = target => {
   return request({
     method: 'DELETE',
-    url: `/v1_0/article/likings/${target}`
+    url: `/app/v1_0/article/likings/${target}`
   })
 }

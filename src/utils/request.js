@@ -6,8 +6,9 @@ import jsonBig from 'json-bigint'
 import { Toast } from 'vant'
 import router from '@/router'
 const request = axios.create({
-  // baseURL: 'http://ttapi.research.itcast.cn/'// 接口的基准路径
-  baseURL: 'http://toutiao-app.itheima.net/',
+  // 接口的基准路径
+  baseURL: 'http://ttapi.research.itcast.cn/',
+  // baseURL: 'http://toutiao-app.itheima.net/',
   transformResponse: [function (data) {
     try {
       // 如果转换成功则返回转换的数据结果
@@ -30,7 +31,7 @@ request.interceptors.request.use(function (config) {
   if (user && user.token) {
     config.headers.Authorization = `Bearer ${user.token}`
   }
-  console.log(config)
+  // console.log(config)
   return config
 }, function (error) {
   // Do something with request error
@@ -46,7 +47,7 @@ request.interceptors.request.use(function (response) {
   if (status === 400) {
     Toast.fail('客户端请求参数错误')
   } else if (status === 401) {
-    // 无效的token
+    // Toast.fail('无效的token')
     const { user } = store.state
     if (!user || !user.refresh_token) {
       // 直接去登录吧，没办法了，跳转到登录页面

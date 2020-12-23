@@ -1,5 +1,5 @@
 <template>
-  <div class="article-list">
+  <div class="article-list" ref="article-list">
     <!-- 下拉刷新 -->
     <!-- <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <van-list
@@ -38,6 +38,7 @@
 <script>
 import { getArticles } from '@/api/article.js'
 import ArticleItem from '@/components/article-item'
+import { debounce } from 'lodash'
 export default {
   name: 'ArticleList',
   components: {
@@ -57,14 +58,29 @@ export default {
       error: false, // 是否加载失败
       timestamp: null, // 请求下一页数据的时间戳
       isRefreshLoading: false,
-      refreshSuccessText: ''
+      refreshSuccessText: '',
+      scrollT: 0
 
     }
   },
   computed: {},
   watch: {},
   created () {},
-  mounted () {},
+  mounted () {
+    const articleList = this.$refs['article-list']
+    articleList.onscroll = debounce(() => {
+      // console.log(this.scrollTop)
+      this.scrollT = articleList.scrollTop
+      // console.log(this.scrollT)
+    }, 200)
+  },
+  activated () {
+    // 从缓存激活的时候触发
+    //  当组件从缓存列表当中激活的时候，把记录的位置给article-list 的  scrollTop
+    this.$refs['article-list'].scrollTop = this.scrollT
+  },
+  deactivated () {},
+  // 从缓存失火的时候触发
   methods: {
     async onLoad () {
       try {

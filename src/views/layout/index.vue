@@ -1,7 +1,9 @@
 <template>
   <div class="layout-container">
     <!-- 子路由出口 -->
-    <router-view/>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
 
     <!-- 标签导航栏   router 开启路由模式 -->
     <van-tabbar class="layout-tabbar" route>
@@ -11,7 +13,7 @@
       </van-tabbar-item>
       <van-tabbar-item to="/qa">
         <i slot="icon" class="toutiao toutiao-wenda"></i>
-        <span class="text">问答</span>
+        <span class="text">你懂的</span>
       </van-tabbar-item>
       <van-tabbar-item to="/video">
         <i slot="icon" class="toutiao toutiao-shipin"></i>
@@ -37,7 +39,9 @@ export default {
   computed: {},
   watch: {},
   created () {},
-  mounted () {},
+  mounted () {
+    this.$store.commit('addCachePage', 'LayoutIndex')
+  },
   methods: {}
 }
 </script>
